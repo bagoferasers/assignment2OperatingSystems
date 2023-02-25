@@ -170,6 +170,8 @@ void SJF_Scheduling( struct PCB_st* Head, FILE* output )
                 smallest = removedOne;
             else
                 previousOne = removedOne;
+            if( removedOne == NULL )
+                break;
             removedOne = removedOne->next;
         }
         if( smallest == Head )
@@ -221,6 +223,8 @@ void PR_Scheduling( struct PCB_st* Head, FILE* output )
                 largest = removedOne;
             else
                 previousOne = removedOne;
+            if( removedOne == NULL )
+                break;
             removedOne = removedOne->next;
         }
         if( largest == Head )
@@ -241,7 +245,6 @@ void PR_Scheduling( struct PCB_st* Head, FILE* output )
         CLOCK = CLOCK + largest->CPUburst;
         Total_turnaround_time = Total_turnaround_time + CLOCK;
         Total_job = Total_job + 1;
-        printf("I'm right here :)\n");
         free( largest );
         printf( "Process %d is completed at %d ms\n", count, CLOCK );
         fprintf( output, "Process %d is completed at %d ms\n", count++, CLOCK );
