@@ -121,7 +121,6 @@ void freeLinkedList( struct PCB_st* Head )
 void FIFO_Scheduling( struct PCB_st* Head, FILE* output )
 {
     struct PCB_st* removedOne;
-    int count = 1;
     while( Head != NULL )
     {
         removedOne = Head;
@@ -139,9 +138,9 @@ void FIFO_Scheduling( struct PCB_st* Head, FILE* output )
         CLOCK = CLOCK + removedOne->CPUburst;
         Total_turnaround_time = Total_turnaround_time + CLOCK;
         Total_job = Total_job + 1;
+        printf( "Process %d is completed at %d ms\n", removedOne->ProcId, CLOCK );
+        fprintf( output, "Process %d is completed at %d ms\n", removedOne->ProcId, CLOCK );
         free( removedOne );
-        printf( "Process %d is completed at %d ms\n", count, CLOCK );
-        fprintf( output, "Process %d is completed at %d ms\n", count++, CLOCK );
     }
     printf( "\nAverage Waiting time = %d ms\n", ( Total_waiting_time / Total_job ) );
     printf( "Average Turnaround time = %d ms\n", ( Total_turnaround_time / Total_job ) );
@@ -158,13 +157,12 @@ void SJF_Scheduling( struct PCB_st* Head, FILE* output )
     struct PCB_st* removedOne;
     struct PCB_st* previousOne;
     struct PCB_st* smallest;
-    int count = 1;
     while( Head != NULL )
     {
         removedOne = Head;
         previousOne = NULL;
         smallest = removedOne;
-        while( removedOne != NULL )
+        while( removedOne && previousOne && smallest )
         {
             if( removedOne->CPUburst < smallest->CPUburst )
                 smallest = removedOne;
@@ -192,9 +190,9 @@ void SJF_Scheduling( struct PCB_st* Head, FILE* output )
         CLOCK = CLOCK + smallest->CPUburst;
         Total_turnaround_time = Total_turnaround_time + CLOCK;
         Total_job = Total_job + 1;
+        printf( "Process %d is completed at %d ms\n", smallest->ProcId, CLOCK );
+        fprintf( output, "Process %d is completed at %d ms\n", smallest->ProcId, CLOCK );
         free( smallest );
-        printf( "Process %d is completed at %d ms\n", count, CLOCK );
-        fprintf( output, "Process %d is completed at %d ms\n", count++, CLOCK );
     }
     printf( "\nAverage Waiting time = %d ms\n", ( Total_waiting_time / Total_job ) );
     printf( "Average Turnaround time = %d ms\n", ( Total_turnaround_time / Total_job ) );
@@ -211,15 +209,14 @@ void PR_Scheduling( struct PCB_st* Head, FILE* output )
     struct PCB_st* removedOne;
     struct PCB_st* previousOne;
     struct PCB_st* largest;
-    int count = 1;
     while( Head != NULL )
     {
         removedOne = Head;
         previousOne = NULL;
         largest = removedOne;
-        while( removedOne != NULL )
+        while( removedOne && previousOne && largest )
         {
-            if( removedOne->CPUburst > largest->CPUburst )
+            if( ( removedOne->CPUburst ) > ( largest->CPUburst ) )
                 largest = removedOne;
             else
                 previousOne = removedOne;
@@ -245,9 +242,9 @@ void PR_Scheduling( struct PCB_st* Head, FILE* output )
         CLOCK = CLOCK + largest->CPUburst;
         Total_turnaround_time = Total_turnaround_time + CLOCK;
         Total_job = Total_job + 1;
+        printf( "Process %d is completed at %d ms\n", largest->ProcId, CLOCK );
+        fprintf( output, "Process %d is completed at %d ms\n", largest->ProcId, CLOCK );
         free( largest );
-        printf( "Process %d is completed at %d ms\n", count, CLOCK );
-        fprintf( output, "Process %d is completed at %d ms\n", count++, CLOCK );
     }
     printf( "\nAverage Waiting time = %d ms\n", ( Total_waiting_time / Total_job ) );
     printf( "Average Turnaround time = %d ms\n", ( Total_turnaround_time / Total_job ) );

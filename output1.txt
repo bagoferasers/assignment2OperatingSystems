@@ -1,0 +1,14 @@
+
+Student Name: Colby Bailey ( nib667 )
+Input File Name: input1.txt
+CPU Scheduling Alg: PR
+
+Process 1 is completed at 5 ms
+Process 2 is completed at 12 ms
+Process 3 is completed at 18 ms
+Process 4 is completed at 22 ms
+
+Average Waiting time = 8 ms
+Average Turnaround time = 14 ms
+Throughput = 0.18 jobs per ms
+
