@@ -9,21 +9,33 @@ int CLOCK = 0;
 int Total_waiting_time = 0;
 int Total_turnaround_time = 0;
 int Total_job = 0;
+int id, pr, burst;
 
 int main( int argc, char* argv[ ] )
 {
     printf( "Student Name: Colby Bailey ( nib667 )\n" );
     
+    //int i = 0;
+    //while( argv[ i++ ] != NULL )
+        //printf("argv[%d] = %s\n", i, argv[ i ] );
+
+    // open file
     FILE* f = NULL;
-    if( argv[ 1 ] == NULL || !fopen( argv[ 1 ], "r+" ) )
+    if( argv[ 4 ] == NULL || !fopen( argv[ 4 ], "r+" ) )
     {
         fprintf( stderr, "ERROR: file does not exist or cannot be opened. Oops!\n" );
         return 1;
     }
     else
     {
-        f = fopen( argv[ 1 ], "r+" );
-        printf( "Input File Name: %s\n", argv[ 3 ] );
+        f = fopen( argv[ 4 ], "r+" );
+        printf( "Input File Name: %s\n", argv[ 4 ] );
+    }
+
+    // scan lines
+    while( ( fscanf( f, "%d %d %d", &id, &pr, &burst ) ) != EOF )
+    {
+        //
     }
 
     fclose( f );
