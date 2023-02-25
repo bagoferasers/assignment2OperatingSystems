@@ -18,14 +18,13 @@ void FIFO_Scheduling( );
 
 int main( int argc, char* argv[ ] )
 {
-    printf( "\nStudent Name: Colby Bailey ( nib667 )\n" );
-    
     //int i = 0;
     //while( argv[ i++ ] != NULL )
         //printf("argv[%d] = %s\n", i, argv[ i ] );
 
     // open file
     FILE* f = NULL;
+    FILE* output = NULL;
     if( argv[ 4 ] == NULL || !fopen( argv[ 4 ], "r+" ) )
     {
         fprintf( stderr, "ERROR: file does not exist or cannot be opened. Oops!\n" );
@@ -35,7 +34,21 @@ int main( int argc, char* argv[ ] )
     {
         f = fopen( argv[ 4 ], "r+" );
         printf( "Input File Name: %s\n", argv[ 4 ] );
+        printf( "\nStudent Name: Colby Bailey ( nib667 )\n" );
     }
+
+    if( !fopen( "output1.txt", "w" ) )
+    {
+        fprintf( stderr, "ERROR: file does not exist or cannot be opened. Oops!\n" );
+        return 1;
+    }
+    else
+    {
+        output = fopen( "output1.txt", "w" );
+        fprintf( output, "\nStudent Name: Colby Bailey ( nib667 )\n" );
+        fprintf( output, "Input File Name: %s\n", argv[ 4 ] );
+    }
+    
 
     // scan lines
     struct PCB_st* p;
@@ -74,15 +87,16 @@ int main( int argc, char* argv[ ] )
         return -1;
     }
     else    
-        printf( "CPU Scheduling Alg: %s\n\n", argv[ 2 ] );
-
-    if( strcmp( argv[ 2 ], "FIFO" ) == 0 )
     {
-        //printf("oh yeah fifo nice\n");
-        FIFO_Scheduling( Head );
+        printf( "CPU Scheduling Alg: %s\n\n", argv[ 2 ] );
+        fprintf( output, "CPU Scheduling Alg: %s\n\n", argv[ 2 ] );
     }
 
+    if( strcmp( argv[ 2 ], "FIFO" ) == 0 )
+        FIFO_Scheduling( Head, output );
+
     //freeLinkedList( Head );
+    fclose( output );
     return 0;
 }
 
@@ -97,7 +111,7 @@ void freeLinkedList( struct PCB_st* Head )
     }
 }
 
-void FIFO_Scheduling( struct PCB_st* Head )
+void FIFO_Scheduling( struct PCB_st* Head, FILE* output )
 {
     struct PCB_st* removedOne;
     int count = 1;
@@ -120,8 +134,12 @@ void FIFO_Scheduling( struct PCB_st* Head )
         Total_job = Total_job + 1;
         free( removedOne );
         printf( "Process %d is completed at %d ms\n", count, CLOCK );
+        fprintf( output, "Process %d is completed at %d ms\n", count, CLOCK );
     }
     printf( "\nAverage Waiting time = %d ms\n", ( Total_waiting_time / Total_job ) );
     printf( "Average Turnaround time = %d ms\n", ( Total_turnaround_time / Total_job ) );
     printf( "Throughput = %.2lf jobs per ms\n\n", ( ( double )Total_job / CLOCK ) );
+    fprintf( output, "\nAverage Waiting time = %d ms\n", ( Total_waiting_time / Total_job ) );
+    fprintf( output, "Average Turnaround time = %d ms\n", ( Total_turnaround_time / Total_job ) );
+    fprintf( output, "Throughput = %.2lf jobs per ms\n\n", ( ( double )Total_job / CLOCK ) );
 }
