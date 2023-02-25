@@ -11,6 +11,8 @@ int Total_turnaround_time = 0;
 int Total_job = 0;
 int id, priority, burst;
 
+void freeLinkedList( struct PCB_st* Head );
+
 int main( int argc, char* argv[ ] )
 {
     printf( "Student Name: Colby Bailey ( nib667 )\n" );
@@ -61,7 +63,28 @@ int main( int argc, char* argv[ ] )
             Tail = p;
         }
     }
-
     fclose( f );
+
+    if( argv[ 2 ] == NULL )
+    {
+        fprintf( stderr, "ERROR: could not find name of scheduling algorithm in command line input.\n" );
+        return -1;
+    }
+    else    
+        printf( "CPU Scheduling Alg: %s\n", argv[ 2 ] );
+
+
+    freeLinkedList( Head );
     return 0;
+}
+
+void freeLinkedList( struct PCB_st* Head )
+{
+    struct PCB_st* imHere = Head;
+    while( imHere != NULL )
+    {
+        struct PCB_st* imNextOne = imHere->next;
+        free( imHere );
+        imHere = imNextOne;
+    }
 }
