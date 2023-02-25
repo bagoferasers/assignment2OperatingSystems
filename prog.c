@@ -33,9 +33,16 @@ int main( int argc, char* argv[ ] )
     }
 
     // scan lines
+    struct PCB_st* p;
     while( ( fscanf( f, "%d %d %d", &id, &pr, &burst ) ) != EOF )
     {
-        //
+        p = ( struct PCB_st* )malloc( sizeof( struct PCB_st ) );
+        if( !p )
+        {
+            free( p );
+            fprintf( stderr, "ERROR: could not allocate memory for struct.\n" );
+            return -1;
+        }
     }
 
     fclose( f );
