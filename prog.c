@@ -169,17 +169,13 @@ void SJF_Scheduling( struct PCB_st* Head, FILE* output )
             if( removedOne->CPUburst < smallest->CPUburst )
                 smallest = removedOne;
             else
-            {
                 previousOne = removedOne;
-            }
             removedOne = removedOne->next;
         }
         if( smallest == Head )
             Head = Head->next;
         else
-        {
             previousOne->next = smallest->next;
-        }
 
         // context switching
         for( int i = 0; i < 8; i++ )
@@ -216,40 +212,21 @@ void PR_Scheduling( struct PCB_st* Head, FILE* output )
     int count = 1;
     while( Head != NULL )
     {
-        printf("head isn't nully boi\n");
         removedOne = Head;
         previousOne = NULL;
         largest = removedOne;
-        printf("before while loop\n");
         while( removedOne != NULL )
         {
-            printf("removedOne != NULL\n");
-            if( !removedOne )
-                printf("removedOne is NULL\n");
-            if( !largest )
-                printf("largest is NULL\n");
-            printf("removedOne->CPUburst = %d\n", removedOne->CPUburst );
-            printf("largest->CPUburst = %d\n", largest->CPUburst );
             if( removedOne->CPUburst > largest->CPUburst )
-            {
-                printf("inside if\n");
                 largest = removedOne;
-            }
             else
-            {
-                printf("inside else\n");
                 previousOne = removedOne;
-            }
             removedOne = removedOne->next;
-            printf("end of nested while\n");
         }
-        printf("after while loop\n");
         if( largest == Head )
             Head = Head->next;
         else
-        {
             previousOne->next = largest->next;
-        }
 
         // context switching
         for( int i = 0; i < 8; i++ )
