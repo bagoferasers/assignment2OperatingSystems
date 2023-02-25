@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "prog.h"
 
 int CPUreg[ 8 ] = { 0 };
@@ -103,11 +104,22 @@ void FIFO_Scheduling( struct PCB_st* Head )
     {
         removedOne = Head;
         Head->next = Head;
+        // context switching
         for( int i = 0; i < 8; i++ )
             CPUreg[ i ] = removedOne->myReg[ i ];
         for( int i = 0; i < 8; i++ )
             CPUreg[ i ]++;
         for( int i = 0; i < 8; i++ )
             removedOne->myReg[ i ] = CPUreg[ i ];
+        // data collection for performance metrics
+        removedOne->waitingTime = removedOne->waitingTime + CLOCK - removedOne->queueEnterClock;
+        Total_waiting_time = Total_waiting_time + removedOne->waitingTime;
+        CLOCK = CLOCK + removedOne->CPUburst;
+        Total_turnaround_time = Total_turnaround_time + CLOCK;
+        Total_job = Total_job + 1;
+        free( removedOne );
     }
+    printf( "Average Waiting time = %d ms\n", ( Total_waiting_time / Total_job ) );
+    printf( "Average Turnaround time = %d ms\n", ( Total_turnaround_time / Total_job ) );
+    printf( "Throughput = %d per ms\n", ( Total_job / CLOCK ) );
 }
