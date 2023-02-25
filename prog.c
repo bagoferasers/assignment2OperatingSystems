@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "prog.h"
 
 int CPUreg[ 8 ] = { 0 };
@@ -12,6 +13,7 @@ int Total_job = 0;
 int id, priority, burst;
 
 void freeLinkedList( struct PCB_st* Head );
+void FIFO_Scheduling( );
 
 int main( int argc, char* argv[ ] )
 {
@@ -73,6 +75,11 @@ int main( int argc, char* argv[ ] )
     else    
         printf( "CPU Scheduling Alg: %s\n", argv[ 2 ] );
 
+    if( strcmp( argv[ 2 ], "FIFO" ) == 0 )
+    {
+        //printf("oh yeah fifo nice\n");
+        FIFO_Scheduling( Head );
+    }
 
     freeLinkedList( Head );
     return 0;
@@ -86,5 +93,21 @@ void freeLinkedList( struct PCB_st* Head )
         struct PCB_st* imNextOne = imHere->next;
         free( imHere );
         imHere = imNextOne;
+    }
+}
+
+void FIFO_Scheduling( struct PCB_st* Head )
+{
+    struct PCB_st* removedOne;
+    while( Head != NULL )
+    {
+        removedOne = Head;
+        Head->next = Head;
+        for( int i = 0; i < 8; i++ )
+            CPUreg[ i ] = removedOne->myReg[ i ];
+        for( int i = 0; i < 8; i++ )
+            CPUreg[ i ]++;
+        for( int i = 0; i < 8; i++ )
+            removedOne->myReg[ i ] = CPUreg[ i ];
     }
 }
