@@ -18,7 +18,7 @@ void FIFO_Scheduling( );
 
 int main( int argc, char* argv[ ] )
 {
-    printf( "Student Name: Colby Bailey ( nib667 )\n" );
+    printf( "\nStudent Name: Colby Bailey ( nib667 )\n" );
     
     //int i = 0;
     //while( argv[ i++ ] != NULL )
@@ -74,7 +74,7 @@ int main( int argc, char* argv[ ] )
         return -1;
     }
     else    
-        printf( "CPU Scheduling Alg: %s\n", argv[ 2 ] );
+        printf( "CPU Scheduling Alg: %s\n\n", argv[ 2 ] );
 
     if( strcmp( argv[ 2 ], "FIFO" ) == 0 )
     {
@@ -82,7 +82,7 @@ int main( int argc, char* argv[ ] )
         FIFO_Scheduling( Head );
     }
 
-    freeLinkedList( Head );
+    //freeLinkedList( Head );
     return 0;
 }
 
@@ -100,10 +100,11 @@ void freeLinkedList( struct PCB_st* Head )
 void FIFO_Scheduling( struct PCB_st* Head )
 {
     struct PCB_st* removedOne;
+    int count = 1;
     while( Head != NULL )
     {
         removedOne = Head;
-        Head->next = Head;
+        Head = Head->next;
         // context switching
         for( int i = 0; i < 8; i++ )
             CPUreg[ i ] = removedOne->myReg[ i ];
@@ -118,8 +119,9 @@ void FIFO_Scheduling( struct PCB_st* Head )
         Total_turnaround_time = Total_turnaround_time + CLOCK;
         Total_job = Total_job + 1;
         free( removedOne );
+        printf( "Process %d is completed at %d ms\n", count, CLOCK );
     }
-    printf( "Average Waiting time = %d ms\n", ( Total_waiting_time / Total_job ) );
+    printf( "\nAverage Waiting time = %d ms\n", ( Total_waiting_time / Total_job ) );
     printf( "Average Turnaround time = %d ms\n", ( Total_turnaround_time / Total_job ) );
-    printf( "Throughput = %d per ms\n", ( Total_job / CLOCK ) );
+    printf( "Throughput = %.2lf jobs per ms\n\n", ( ( double )Total_job / CLOCK ) );
 }
