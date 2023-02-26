@@ -1,0 +1,4 @@
+1. me
+2. No. I couldn't figure out why the min and max wasn't working
+3. I think the FIFO is working but the others are having trouble with the order they are done in for some reason
+4. This assignment was hard for me but I'm happy I gave it what I did even though it's incomplete.
